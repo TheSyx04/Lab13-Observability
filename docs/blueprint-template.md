@@ -98,7 +98,7 @@
 
 ### [Ngô Quang Tăng]
 - [TASKS_COMPLETED]: Completed Step 8 Alerting end-to-end: tuned alert thresholds to align with SLOs (`latency_p95_ms > 3000 for 5m`, `error_rate_pct > 2 for 5m`, cost/token spike condition), finalized runbook links in `config/alert_rules.yaml`, expanded `docs/alerts.md` with a full triage flow (Metrics -> Traces -> Logs -> Mitigation -> Recovery), and executed live incident drill for `rag_slow` (enable -> load test -> disable -> verify recovery).
-- [EVIDENCE_LINK]: Updated files: `config/alert_rules.yaml`, `docs/alerts.md`, `docs/blueprint-template.md`. Runtime drill evidence captured from commands: `scripts/load_test.py`, `scripts/inject_incident.py --scenario rag_slow`, and `/metrics` snapshot.
+- [EVIDENCE_LINK]: [Step 8 commit](https://github.com/TheSyx04/Lab13-Observability/commit/9943d105faa224aba4e08729c6665b6cc09b9578)
 
 ---
 
