@@ -188,8 +188,8 @@ Use this section at handoff time.
 
 - [x] Step 1 complete
 - [x] Step 2 complete
-- [ ] Step 3 complete
-- [ ] Step 4 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
 - [ ] Step 5 complete
 - [ ] Step 6 complete
 - [ ] Step 7 complete
@@ -206,6 +206,13 @@ Handoff notes:
     - `GET /health` with `x-request-id=req-member1` returned same request ID.
     - `POST /chat` returned 200 with non-empty `correlation_id`.
     - Last 10 log lines include API records with non-`MISSING` `correlation_id`.
+  - Member 2 evidence summary:
+    - `/chat` API logs include `user_id_hash`, `session_id`, `feature`, `model`, and `env`.
+    - `user_id_hash` uses `hash_user_id(...)`; raw user ID is not bound to logs.
+    - `scrub_event` runs before JSON/file rendering.
+    - PII examples for email, Vietnamese phone, credit card, passport, and address keywords are redacted.
+    - `pytest` passes.
+    - `python scripts/validate_logs.py` reports `Estimated Score: 100/100`.
 
 ---
 
