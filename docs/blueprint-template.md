@@ -74,7 +74,7 @@
 - [EVIDENCE_LINK]: [Link to commit](https://github.com/TheSyx04/Lab13-Observability/commit/5dcb62c304d147978fc5f8dc014e75e435e16c6a)
 
 ### [Vũ Đức Minh]
-- [TASKS_COMPLETED]: 
+- [TASKS_COMPLETED]: Completed Step 3 and Step 4 as Logging Enrichment and PII Owner: enriched `/chat` API logs with `user_id_hash`, `session_id`, `feature`, `model`, and `env`; ensured `user_id_hash` is generated via `hash_user_id(...)` instead of logging raw user IDs; registered `scrub_event` in the structlog processor chain before JSON/file rendering; extended PII redaction for email, Vietnamese phone, CCCD, credit card, passport, and Vietnamese address keywords; added tests for PII scrubbing and `/chat` log enrichment; verified the work with `pytest` (`5 passed`) and `python scripts/validate_logs.py` (`Estimated Score: 100/100`, `Potential PII leaks detected: 0`).
 - [EVIDENCE_LINK]: [Link to commit](https://github.com/TheSyx04/Lab13-Observability/commit/cb44249cc7d03ec655e611a939361828e09807ac)
 
 ### [Phạm Minh Khôi]
