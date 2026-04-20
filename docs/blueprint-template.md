@@ -64,7 +64,7 @@
 - [EVIDENCE_LINK]: [Link to commit](https://github.com/TheSyx04/Lab13-Observability/commit/cb44249cc7d03ec655e611a939361828e09807ac)
 
 ### [Phạm Minh Khôi]
-- [TASKS_COMPLETED]: 
+- [TASKS_COMPLETED]: Chạy script giả lập tải (load_test.py) và kiểm tra tính hợp lệ của Logs (validate_logs.py), đảm bảo hệ thống đạt 100/100 điểm đánh giá tự động (Không rò rỉ PII, đủ Correlation ID và Context).Phát hiện lỗi không tương thích phiên bản của Langfuse (code cũ v2 vs thư viện v4) khiến hệ thống mất dấu vết. Trực tiếp refactor lại mã nguồn (app/agent.py và app/tracing.py) để tương thích với Langfuse v4. Cấu hình thành công môi trường, thu thập hơn 10 traces hoàn chỉnh với biểu đồ Waterfall trên Langfuse.
 - [EVIDENCE_LINK]: [Link to commit](https://github.com/TheSyx04/Lab13-Observability/commit/4117b11384c3bab91330df5c45b843a7b270b1ae)
 
 ### [Nguyễn Thế Anh]
