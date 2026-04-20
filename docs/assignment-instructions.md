@@ -19,6 +19,14 @@ Observe:
 - logs are basic at first
 - correlation id may be missing (`MISSING`)
 
+Checklist:
+- [ ] Virtual environment is active.
+- [ ] Dependencies installed from `requirements.txt`.
+- [ ] `.env` exists (copied from `.env.example`).
+- [ ] App starts successfully with `uvicorn app.main:app --reload`.
+- [ ] `GET /health` returns HTTP 200.
+- [ ] At least one `POST /chat` request returns HTTP 200.
+
 ## Step 2) Implement Correlation IDs
 Primary file: `app/middleware.py`
 
@@ -31,6 +39,13 @@ Complete all TODOs:
 Done when:
 - each request has a stable correlation id
 - API logs include non-`MISSING` `correlation_id`
+
+Checklist:
+- [ ] `app/middleware.py` TODOs are all removed/completed.
+- [ ] Requests without `x-request-id` receive generated `req-<8-char-hex>` value.
+- [ ] Requests with `x-request-id` preserve/echo the same value.
+- [ ] Response header `x-response-time-ms` is present and numeric.
+- [ ] API logs include `correlation_id` and it is not `MISSING`.
 
 ## Step 3) Enrich logs with request context
 Primary file: `app/main.py`
@@ -45,6 +60,12 @@ Complete TODO in `/chat` by binding context fields:
 Done when:
 - API logs include enrichment fields required by validator (`user_id_hash`, `session_id`, `feature`, `model`)
 
+Checklist:
+- [ ] `app/main.py` TODO in `/chat` is completed.
+- [ ] `bind_contextvars(...)` includes `user_id_hash`, `session_id`, `feature`, `model`, `env`.
+- [ ] `user_id_hash` uses `hash_user_id(...)`, not raw user ID.
+- [ ] New `/chat` logs contain enrichment fields for API events.
+
 ## Step 4) Sanitize data (PII scrubbing)
 Primary files: `app/logging_config.py`, `app/pii.py`
 
@@ -56,6 +77,12 @@ Done when:
 - event text and payload strings are redacted
 - no obvious PII appears in logs
 - tests still pass (`tests/test_pii.py`)
+
+Checklist:
+- [ ] `scrub_event` is registered in `app/logging_config.py` before final rendering.
+- [ ] `PII_PATTERNS` in `app/pii.py` includes additional patterns.
+- [ ] Logs do not expose raw emails/credit card values in event or payload text.
+- [ ] `pytest tests/test_pii.py` passes.
 
 ## Step 5) Verify with script
 Primary script: `scripts/validate_logs.py`
@@ -74,6 +101,13 @@ Target checks:
 - no PII hits (`@` or test card pattern)
 - estimated score reaches at least 80/100
 
+Checklist:
+- [ ] Load test ran at least once (`scripts/load_test.py`).
+- [ ] `data/logs.jsonl` has fresh records from the latest run.
+- [ ] `python scripts/validate_logs.py` executed successfully.
+- [ ] Validation score is `>= 80/100`.
+- [ ] No PII leak warning is reported.
+
 ## Step 6) Tracing (Langfuse)
 Primary files: `app/agent.py`, `app/tracing.py`
 
@@ -88,6 +122,13 @@ Do:
 Notes:
 - `@observe()` is already used in agent pipeline
 - if keys are missing, tracing falls back to dummy context
+
+Checklist:
+- [ ] Langfuse keys are set in `.env`.
+- [ ] 10-20 requests were sent after keys were configured.
+- [ ] Langfuse shows at least 10 traces.
+- [ ] One complete waterfall trace is captured/screenshot-ready.
+- [ ] Trace metadata/tags are visible on sample traces.
 
 ## Step 7) Dashboards
 Build exactly these 6 required panels:
@@ -108,6 +149,13 @@ Dashboard quality bar:
 SLO source:
 - review/update `config/slo.yaml` and reflect values in your report
 
+Checklist:
+- [ ] Dashboard includes all 6 required panels.
+- [ ] Panels have correct units and readable labels.
+- [ ] Time range defaults to 1h and auto-refresh is enabled.
+- [ ] SLO/threshold line is visible on relevant panels.
+- [ ] `config/slo.yaml` values are reviewed and documented.
+
 ## Step 8) Alerting
 Primary files: `config/alert_rules.yaml`, `docs/alerts.md`
 
@@ -124,6 +172,40 @@ Test alert readiness with incident injection:
 Done when:
 - your team can explain debugging flow: Metrics -> Traces -> Logs
 - root cause is proven with concrete trace/log evidence
+
+Checklist:
+- [ ] `config/alert_rules.yaml` has at least 3 alert rules.
+- [ ] Every alert has severity, condition, owner, and runbook link.
+- [ ] Runbook anchors in `docs/alerts.md` resolve correctly.
+- [ ] Incident injection tested at least once (enable/disable).
+- [ ] Team can provide one incident root-cause write-up with evidence.
+
+---
+
+## Step completion status log
+
+Use this section at handoff time.
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [ ] Step 3 complete
+- [ ] Step 4 complete
+- [ ] Step 5 complete
+- [ ] Step 6 complete
+- [ ] Step 7 complete
+- [ ] Step 8 complete
+
+Handoff notes:
+- Member 1 -> Member 2:
+  - [x] Evidence attached (terminal output or screenshots)
+  - [ ] Blocking issues documented (if any)
+  - Evidence summary:
+    - `.env` exists.
+    - `app/middleware.py` has no TODO left.
+    - `GET /health` without header returned 200 with generated `x-request-id` and `x-response-time-ms`.
+    - `GET /health` with `x-request-id=req-member1` returned same request ID.
+    - `POST /chat` returned 200 with non-empty `correlation_id`.
+    - Last 10 log lines include API records with non-`MISSING` `correlation_id`.
 
 ---
 
