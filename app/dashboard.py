@@ -5,7 +5,12 @@ from __future__ import annotations
 from fastapi import APIRouter
 from fastapi.responses import HTMLResponse
 
-from .metrics import timeseries_data
+try:
+  # Package mode (e.g., imported by app.main)
+  from .metrics import timeseries_data
+except ImportError:
+  # Script mode (e.g., `python dashboard.py` from app/)
+  from metrics import timeseries_data
 
 router = APIRouter(tags=["dashboard"])
 

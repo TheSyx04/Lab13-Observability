@@ -24,13 +24,13 @@
 ## 3. Technical Evidence (Group)
 
 ### 3.1 Logging & Tracing
-- [EVIDENCE_CORRELATION_ID_SCREENSHOT]: [Path to image]
-- [EVIDENCE_PII_REDACTION_SCREENSHOT]: [Path to image]
-- [EVIDENCE_TRACE_WATERFALL_SCREENSHOT]: [evidence\trace_waterfall.jpg]
+- [EVIDENCE_CORRELATION_ID_SCREENSHOT]: [../evidence/correlation_id.png] ![alt text](../evidence/correlation_id.png)
+- [EVIDENCE_PII_REDACTION_SCREENSHOT]: [../evidence/pii_redaction.png] ![alt text](../evidence/pii_redaction.png)
+- [EVIDENCE_TRACE_WATERFALL_SCREENSHOT]: [../evidence/trace_waterfall.jpg] ![alt text](../evidence/trace_waterfall.jpg)
 - [TRACE_WATERFALL_EXPLANATION] : In the Langfuse run detail, one waterfall shows total latency 0.15s, with output metrics `latency_ms=142`, `tokens_in=29`, `tokens_out=120`, `cost_usd=0.001887`, and `quality_score=0.9`.
 
 ### 3.2 Dashboard & SLOs
-- [DASHBOARD_6_PANELS_SCREENSHOT]: [Path to image]
+- [DASHBOARD_6_PANELS_SCREENSHOT]: [../evidence/dashboard.png] ![alt text](../evidence/dashboard.png)
 - **Dashboard URL**: `/dashboard` (served by `app/dashboard.py`)
 - **Panels implemented**: 6 / 6
   1. **Latency P50/P95/P99** — Line chart with SLO annotation at 3 000 ms
@@ -53,13 +53,13 @@
 | Quality Score | > 0.75 | 28d | *(live on dashboard)* |
 
 ### 3.3 Alerts & Runbook
-- [ALERT_RULES_SCREENSHOT]: [evidence/alerts_rules.png]
-- [SAMPLE_RUNBOOK_LINK]: [docs/alerts.md#1-high-latency-p95]
+- [ALERT_RULES_SCREENSHOT]: [../evidence/alerts_rules.png] ![alt text](../evidence/alerts_rules.png)
+- [SAMPLE_RUNBOOK_LINK] : [docs/alerts.md#1-high-latency-p95]
 
 ---
 
 ## 4. Incident Response (Group)
-- [SCENARIO_NAME]: rag_slow
+- [SCENARIO_NAME] : rag_slow
 - [SYMPTOMS_OBSERVED]: Baseline load (`python scripts/load_test.py --concurrency 5`) stayed around ~307-779 ms, but after enabling `rag_slow`, latency jumped to ~7,965-13,279 ms per request.
 - [ROOT_CAUSE_PROVED_BY]: Metrics and traces were correlated during the same time window: high request latency was concentrated in retrieval (RAG) span, while log records under matching `correlation_id` showed normal application flow with no API error bursts.
 - [FIX_ACTION]: Disabled incident toggle (`python scripts/inject_incident.py --scenario rag_slow --disable`), reran load, and confirmed recovery trend with metrics snapshot (`traffic=20`, `latency_p95=2651`, `error_breakdown={}`).
@@ -78,7 +78,7 @@
 - [EVIDENCE_LINK]: [Link to commit](https://github.com/TheSyx04/Lab13-Observability/commit/cb44249cc7d03ec655e611a939361828e09807ac)
 
 ### [Phạm Minh Khôi]
-- [TASKS_COMPLETED]: Chạy script giả lập tải (load_test.py) và kiểm tra tính hợp lệ của Logs (validate_logs.py), đảm bảo hệ thống đạt 100/100 điểm đánh giá tự động (Không rò rỉ PII, đủ Correlation ID và Context).Phát hiện lỗi không tương thích phiên bản của Langfuse (code cũ v2 vs thư viện v4) khiến hệ thống mất dấu vết. Trực tiếp refactor lại mã nguồn (app/agent.py và app/tracing.py) để tương thích với Langfuse v4. Cấu hình thành công môi trường, thu thập hơn 10 traces hoàn chỉnh với biểu đồ Waterfall trên Langfuse.
+- [TASKS_COMPLETED]: Ran load simulation (`load_test.py`) and validated log correctness (`validate_logs.py`), ensuring the system achieved an automated score of 100/100 (no PII leakage, correlation IDs present, and required context fields included). Identified a Langfuse version incompatibility (legacy v2-style code vs v4 library) that caused missing traces. Refactored `app/agent.py` and `app/tracing.py` to be compatible with Langfuse v4. Successfully configured the environment and collected more than 10 complete traces with a waterfall view in Langfuse.
 - [EVIDENCE_LINK]: [Link to commit](https://github.com/TheSyx04/Lab13-Observability/commit/4117b11384c3bab91330df5c45b843a7b270b1ae)
 
 ### Nguyễn Thế Anh (Member D — Dashboard & SLO Owner)
