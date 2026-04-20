@@ -3,21 +3,21 @@
 > **Instruction**: Fill in all sections below. This report is designed to be parsed by an automated grading assistant. Ensure all tags (e.g., `[GROUP_NAME]`) are preserved.
 
 ## 1. Team Metadata
-- [GROUP_NAME]: 
-- [REPO_URL]: 
-- [MEMBERS]:
-  - Member A: [Name] | Role: Logging & PII
-  - Member B: [Name] | Role: Tracing & Enrichment
-  - Member C: [Name] | Role: SLO & Alerts
-  - Member D: [Nguyễn Thế Anh] | Role: Load Test & Dashboard
-  - Member E: [Name] | Role: Demo & Report
+- [GROUP_NAME] : 26
+- [REPO_URL] : https://github.com/TheSyx04/Lab13-Observability.git
+- [MEMBERS] : 
+  - Member A: [Trần Sỹ Minh Quân] | Role: Platform and Correlation ID Owner
+  - Member B: [Vũ Đức Minh] | Role: Logging Enrichment and PII Owner
+  - Member C: [Phạm Minh Khôi] | Role: Verification and Tracing Owner
+  - Member D: [Nguyễn Thế Anh] | Role: Dashboard and SLO Owner
+  - Member E: [Ngô Quang Tăng] | Role: Alerting, Incident Response, and Submission Owner
 
 ---
 
 ## 2. Group Performance (Auto-Verified)
-- [VALIDATE_LOGS_FINAL_SCORE]: /100
-- [TOTAL_TRACES_COUNT]: 
-- [PII_LEAKS_FOUND]: 
+- [VALIDATE_LOGS_FINAL_SCORE] : 100/100
+- [TOTAL_TRACES_COUNT] : 10
+- [PII_LEAKS_FOUND] : 0
 
 ---
 
@@ -26,8 +26,8 @@
 ### 3.1 Logging & Tracing
 - [EVIDENCE_CORRELATION_ID_SCREENSHOT]: [Path to image]
 - [EVIDENCE_PII_REDACTION_SCREENSHOT]: [Path to image]
-- [EVIDENCE_TRACE_WATERFALL_SCREENSHOT]: [Path to image]
-- [TRACE_WATERFALL_EXPLANATION]: (Briefly explain one interesting span in your trace)
+- [EVIDENCE_TRACE_WATERFALL_SCREENSHOT]: [evidence\trace_waterfall.jpg]
+- [TRACE_WATERFALL_EXPLANATION] : In the Langfuse run detail, one waterfall shows total latency 0.15s, with output metrics `latency_ms=142`, `tokens_in=29`, `tokens_out=120`, `cost_usd=0.001887`, and `quality_score=0.9`.
 
 ### 3.2 Dashboard & SLOs
 - [DASHBOARD_6_PANELS_SCREENSHOT]: [Path to image]
@@ -69,17 +69,17 @@
 
 ## 5. Individual Contributions & Evidence
 
-### [MEMBER_A_NAME]
-- [TASKS_COMPLETED]: 
-- [EVIDENCE_LINK]: (Link to specific commit or PR)
+### [Trần Sỹ Minh Quân]
+- [TASKS_COMPLETED]: Completed Step 1 (starter app setup and baseline verification) and Step 2 (correlation ID middleware): created and activated virtual environment, installed dependencies, verified `/health` and `/chat`, implemented request correlation propagation (incoming `x-request-id` or generated `req-<8-char-hex>`), ensured response headers `x-request-id` and `x-response-time-ms`, and verified API logs contain non-`MISSING` `correlation_id`.
+- [EVIDENCE_LINK]: [Link to commit](https://github.com/TheSyx04/Lab13-Observability/commit/5dcb62c304d147978fc5f8dc014e75e435e16c6a)
 
-### [MEMBER_B_NAME]
+### [Vũ Đức Minh]
 - [TASKS_COMPLETED]: 
-- [EVIDENCE_LINK]: 
+- [EVIDENCE_LINK]: [Link to commit](https://github.com/TheSyx04/Lab13-Observability/commit/cb44249cc7d03ec655e611a939361828e09807ac)
 
-### [MEMBER_C_NAME]
-- [TASKS_COMPLETED]: 
-- [EVIDENCE_LINK]: 
+### [Phạm Minh Khôi]
+- [TASKS_COMPLETED]: Chạy script giả lập tải (load_test.py) và kiểm tra tính hợp lệ của Logs (validate_logs.py), đảm bảo hệ thống đạt 100/100 điểm đánh giá tự động (Không rò rỉ PII, đủ Correlation ID và Context).Phát hiện lỗi không tương thích phiên bản của Langfuse (code cũ v2 vs thư viện v4) khiến hệ thống mất dấu vết. Trực tiếp refactor lại mã nguồn (app/agent.py và app/tracing.py) để tương thích với Langfuse v4. Cấu hình thành công môi trường, thu thập hơn 10 traces hoàn chỉnh với biểu đồ Waterfall trên Langfuse.
+- [EVIDENCE_LINK]: [Link to commit](https://github.com/TheSyx04/Lab13-Observability/commit/4117b11384c3bab91330df5c45b843a7b270b1ae)
 
 ### Nguyễn Thế Anh (Member D — Dashboard & SLO Owner)
 - [TASKS_COMPLETED]:
@@ -96,7 +96,7 @@
   - Premium dark-theme UI with glassmorphism, Inter/JetBrains Mono fonts, fade-up animations
 - [EVIDENCE_LINK]: See `app/dashboard.py`, `app/metrics.py`, `config/slo.yaml`, `app/main.py` (line 15 & 23)
 
-### [MEMBER_E_NAME]
+### [Ngô Quang Tăng]
 - [TASKS_COMPLETED]: 
 - [EVIDENCE_LINK]: 
 
