@@ -1,19 +1,25 @@
 alerts:
   - name: high_latency_p95
     severity: P2
-    condition: latency_p95_ms > 5000 for 30m
+    condition: latency_p95_ms > 3000 for 5m
     type: symptom-based
     owner: team-oncall
+    source: /dashboard/data.latency.p95
+    rationale: Aligns with latency SLO objective in config/slo.yaml.
     runbook: docs/alerts.md#1-high-latency-p95
   - name: high_error_rate
     severity: P1
-    condition: error_rate_pct > 5 for 5m
+    condition: error_rate_pct > 2 for 5m
     type: symptom-based
     owner: team-oncall
+    source: /dashboard/data.error_rate_pct
+    rationale: Matches SLO objective and protects user-facing reliability.
     runbook: docs/alerts.md#2-high-error-rate
   - name: cost_budget_spike
     severity: P2
-    condition: hourly_cost_usd > 2x_baseline for 15m
+    condition: avg_cost_usd > 0.004 for 10m OR tokens_out_total growth > 2x baseline
     type: symptom-based
     owner: finops-owner
+    source: /dashboard/data.cost + /dashboard/data.tokens
+    rationale: Detects sudden token explosion in lab scenarios (cost_spike incident).
     runbook: docs/alerts.md#3-cost-budget-spike

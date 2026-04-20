@@ -53,17 +53,17 @@
 | Quality Score | > 0.75 | 28d | *(live on dashboard)* |
 
 ### 3.3 Alerts & Runbook
-- [ALERT_RULES_SCREENSHOT]: [Path to image]
-- [SAMPLE_RUNBOOK_LINK]: [docs/alerts.md#L...]
+- [ALERT_RULES_SCREENSHOT]: [evidence/alerts_rules.png]
+- [SAMPLE_RUNBOOK_LINK]: [docs/alerts.md#1-high-latency-p95]
 
 ---
 
 ## 4. Incident Response (Group)
-- [SCENARIO_NAME]: (e.g., rag_slow)
-- [SYMPTOMS_OBSERVED]: 
-- [ROOT_CAUSE_PROVED_BY]: (List specific Trace ID or Log Line)
-- [FIX_ACTION]: 
-- [PREVENTIVE_MEASURE]: 
+- [SCENARIO_NAME]: rag_slow
+- [SYMPTOMS_OBSERVED]: Baseline load (`python scripts/load_test.py --concurrency 5`) stayed around ~307-779 ms, but after enabling `rag_slow`, latency jumped to ~7,965-13,279 ms per request.
+- [ROOT_CAUSE_PROVED_BY]: Metrics and traces were correlated during the same time window: high request latency was concentrated in retrieval (RAG) span, while log records under matching `correlation_id` showed normal application flow with no API error bursts.
+- [FIX_ACTION]: Disabled incident toggle (`python scripts/inject_incident.py --scenario rag_slow --disable`), reran load, and confirmed recovery trend with metrics snapshot (`traffic=20`, `latency_p95=2651`, `error_breakdown={}`).
+- [PREVENTIVE_MEASURE]: Keep p95 latency alert at 3000 ms/5m, add rollback checklist in runbook, and monitor retrieval latency ratio against total request latency.
 
 ---
 
@@ -97,8 +97,8 @@
 - [EVIDENCE_LINK]: See `app/dashboard.py`, `app/metrics.py`, `config/slo.yaml`, `app/main.py` (line 15 & 23)
 
 ### [Ngô Quang Tăng]
-- [TASKS_COMPLETED]: 
-- [EVIDENCE_LINK]: 
+- [TASKS_COMPLETED]: Completed Step 8 Alerting end-to-end: tuned alert thresholds to align with SLOs (`latency_p95_ms > 3000 for 5m`, `error_rate_pct > 2 for 5m`, cost/token spike condition), finalized runbook links in `config/alert_rules.yaml`, expanded `docs/alerts.md` with a full triage flow (Metrics -> Traces -> Logs -> Mitigation -> Recovery), and executed live incident drill for `rag_slow` (enable -> load test -> disable -> verify recovery).
+- [EVIDENCE_LINK]: Updated files: `config/alert_rules.yaml`, `docs/alerts.md`, `docs/blueprint-template.md`. Runtime drill evidence captured from commands: `scripts/load_test.py`, `scripts/inject_incident.py --scenario rag_slow`, and `/metrics` snapshot.
 
 ---
 
