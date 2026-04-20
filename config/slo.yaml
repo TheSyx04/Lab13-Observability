@@ -1,16 +1,27 @@
 service: day13-observability-lab
 window: 28d
+
 slis:
   latency_p95_ms:
     objective: 3000
     target: 99.5
-    note: Replace with your group's target
+    unit: ms
+    note: "99.5% of requests must complete within 3000ms (P95)"
+
   error_rate_pct:
     objective: 2
     target: 99.0
+    unit: "%"
+    note: "Error rate must stay below 2% over the 28-day window"
+
   daily_cost_usd:
     objective: 2.5
     target: 100.0
+    unit: USD
+    note: "Total daily spending must not exceed $2.50 USD"
+
   quality_score_avg:
     objective: 0.75
     target: 95.0
+    unit: score (0-1)
+    note: "Average heuristic quality score must stay above 0.75"

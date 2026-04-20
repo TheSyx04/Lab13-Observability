@@ -12,6 +12,7 @@ from .logging_config import configure_logging, get_logger
 from .metrics import record_error, snapshot
 from .middleware import CorrelationIdMiddleware
 from .pii import hash_user_id, summarize_text
+from .dashboard import router as dashboard_router
 from .schemas import ChatRequest, ChatResponse
 from .tracing import tracing_enabled
 
@@ -19,6 +20,7 @@ configure_logging()
 log = get_logger()
 app = FastAPI(title="Day 13 Observability Lab")
 app.add_middleware(CorrelationIdMiddleware)
+app.include_router(dashboard_router)
 agent = LabAgent()
 
 
