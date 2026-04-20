@@ -9,7 +9,7 @@
   - Member A: [Name] | Role: Logging & PII
   - Member B: [Name] | Role: Tracing & Enrichment
   - Member C: [Name] | Role: SLO & Alerts
-  - Member D: [Name] | Role: Load Test & Dashboard
+  - Member D: [Nguyễn Thế Anh] | Role: Load Test & Dashboard
   - Member E: [Name] | Role: Demo & Report
 
 ---
@@ -31,12 +31,26 @@
 
 ### 3.2 Dashboard & SLOs
 - [DASHBOARD_6_PANELS_SCREENSHOT]: [Path to image]
+- **Dashboard URL**: `/dashboard` (served by `app/dashboard.py`)
+- **Panels implemented**: 6 / 6
+  1. **Latency P50/P95/P99** — Line chart with SLO annotation at 3 000 ms
+  2. **Traffic (Requests)** — Bar chart showing request count per bucket
+  3. **Error Rate with Breakdown** — Line chart (fill) + dynamic per-error-type breakdown, SLO at 2 %
+  4. **Cost Over Time** — Cumulative + per-interval lines, SLO at $2.50/day
+  5. **Tokens In/Out** — Stacked bar chart
+  6. **Quality Score (Heuristic Proxy)** — Line chart (fill), SLO at 0.75
+- **Auto-refresh**: every 15 seconds
+- **Default time range**: 1 hour (selectable: 1 h / 6 h / 24 h)
+- **SLO/threshold lines**: visible and labeled via `chartjs-plugin-annotation` on Latency, Error Rate, Cost, Quality panels
+- **SLO source**: `config/slo.yaml` — reviewed and enriched with `unit` and `note` fields
 - [SLO_TABLE]:
+
 | SLI | Target | Window | Current Value |
 |---|---:|---|---:|
-| Latency P95 | < 3000ms | 28d | |
-| Error Rate | < 2% | 28d | |
-| Cost Budget | < $2.5/day | 1d | |
+| Latency P95 | < 3000 ms | 28d | *(live on dashboard)* |
+| Error Rate | < 2% | 28d | *(live on dashboard)* |
+| Cost Budget | < $2.50/day | 1d | *(live on dashboard)* |
+| Quality Score | > 0.75 | 28d | *(live on dashboard)* |
 
 ### 3.3 Alerts & Runbook
 - [ALERT_RULES_SCREENSHOT]: [Path to image]
@@ -67,9 +81,20 @@
 - [TASKS_COMPLETED]: 
 - [EVIDENCE_LINK]: 
 
-### [MEMBER_D_NAME]
-- [TASKS_COMPLETED]: 
-- [EVIDENCE_LINK]: 
+### Nguyễn Thế Anh (Member D — Dashboard & SLO Owner)
+- [TASKS_COMPLETED]:
+  - **Step 7 — Dashboards**: Implemented the full 6-panel observability dashboard
+  - Created `app/dashboard.py` — self-contained HTML dashboard served at `/dashboard` using Chart.js 4.x + `chartjs-plugin-annotation`
+  - Enhanced `app/metrics.py` — added `TimeSeriesRecord` / `ErrorTimeRecord` dataclasses and `timeseries_data()` aggregation function for time-bucketed chart data
+  - Created `/dashboard/data` API endpoint returning JSON metrics consumed by frontend charts
+  - Implemented all 6 required panels: Latency P50/P95/P99, Traffic, Error Rate w/ breakdown, Cost over time, Tokens In/Out, Quality Score
+  - Added SLO/threshold annotation lines on relevant panels (Latency: 3000 ms, Error Rate: 2%, Cost: $2.50/day, Quality: 0.75)
+  - Auto-refresh every 15 s with selectable time ranges (1 h / 6 h / 24 h)
+  - Reviewed and enriched `config/slo.yaml` with `unit` and `note` fields for each SLI
+  - Integrated dashboard router into `app/main.py` via `app.include_router(dashboard_router)`
+  - Summary cards with live SLO status indicators (green/red) and responsive grid layout
+  - Premium dark-theme UI with glassmorphism, Inter/JetBrains Mono fonts, fade-up animations
+- [EVIDENCE_LINK]: See `app/dashboard.py`, `app/metrics.py`, `config/slo.yaml`, `app/main.py` (line 15 & 23)
 
 ### [MEMBER_E_NAME]
 - [TASKS_COMPLETED]: 
